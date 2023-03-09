@@ -84,7 +84,7 @@ int generateBill(Car* c){
     if(c->checkoutTime.substr(5,2) == "pm") h2 += 12;
 
     int totalTime = (h2-h1) + ((m2-m1)/60);
-    cout<<"totaltime"<<totalTime<<endl;
+    //cout<<"totaltime"<<totalTime<<endl;
     if(totalTime <= 2) return 50;
     else if(totalTime >= 2 && totalTime <= 4) return 80;
     else return 100;
@@ -119,12 +119,6 @@ int main(){
         parking[tempFloor][tempSlot] = 2;
     }
 
-    for(auto i:parking){
-        for(auto j:i){
-            cout<<j<<" ";
-        }
-        cout<<endl;
-    }
     //list of all cars;
     vector<Car*> carInfo;
 
@@ -140,14 +134,14 @@ int main(){
         //checkin procedure
         if(currDetails.size() == 4){
             Car* c = new Car(currDetails[1],currDetails[2],currDetails[3]);
-            carInfo.push_back(c);
-            mp[c->number] = idx++;
             //finding free slot
             pair<int,int> freeSlot = getSlot(parking,currDetails[3]);
             if(freeSlot.first == -1){
-                cout<<"No slot is empty\n";
+                cout<<"PARKING FULL\n";
                 continue;
             }
+            carInfo.push_back(c);
+            mp[c->number] = idx++;
             c -> parkingFloor = freeSlot.first;
             c-> parkingSlot = freeSlot.second;
             char ch = 'A' + freeSlot.first;
@@ -156,14 +150,15 @@ int main(){
             parked += "-" + to_string(freeSlot.second);
             c-> parkedLocation = parked;
             bookSlot(parking,freeSlot ,currDetails[3]);
-            printParking(parking);
+            cout<<c->parkedLocation<<endl;
+            //printParking(parking);
         }
         //checkout procedure
         else if(currDetails.size() == 3){
             Car* currCar = carInfo[mp[currDetails[1]]];
             currCar->checkoutTime = currDetails[2];
             currCar->charges = generateBill(currCar);
-            getCarDetails(currCar);
+            //getCarDetails(currCar);
             freeTheSlot(parking,currCar);
         }
         
