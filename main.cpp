@@ -89,6 +89,12 @@ int generateBill(Car* c){
     else if(totalTime >= 2 && totalTime <= 4) return 80;
     else return 100;
 }
+//sorting
+bool compare(Car* c1,Car* c2){
+    if(c1->parkingFloor != c2->parkingFloor) return c1->parkingFloor < c2->parkingFloor;
+    if(c1->parkingSlot != c2->parkingSlot) return c1->parkingSlot < c2->parkingSlot;
+    return c1->checkinTime < c2->checkinTime;
+}
 
 int main(){
     int floors; 
@@ -164,6 +170,7 @@ int main(){
         
         //report generation
         else if(currDetails.size() == 2){
+            sort(carInfo.begin(),carInfo.end(),compare);
             cout<<"PARKING SLOT, CAR NO, CHECK IN TIME, CHECK OUT TIME, CHARGES, CATEGORY"<<endl;
             for(auto i:carInfo){
                 getCarDetails(i);
